@@ -148,4 +148,41 @@ public class Solution {
     }
 }
 
-```
+//Shen
+class MedianFinder {
+
+    PriorityQueue<Integer> maxHeap;
+    PriorityQueue<Integer> minHeap;
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<>((a,b) -> b - a);
+        minHeap = new PriorityQueue<>();
+    }
+    
+    public void addNum(int num) {
+        if(num < findMedian()){
+            maxHeap.offer(num);
+        }else{
+            minHeap.offer(num);
+        }
+        
+        //rebalance
+        if(maxHeap.size() - minHeap.size() > 1){
+            minHeap.offer(maxHeap.poll());
+        }else if(maxHeap.size() < minHeap.size()){
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if(maxHeap.size() == 0 && minHeap.size() == 0){
+            return 0;
+        }
+        
+        if(maxHeap.size() == minHeap.size()){
+            return (double)(maxHeap.peek() + minHeap.peek()) / 2.0;
+        }else{
+            return maxHeap.peek();
+        }
+    }
+}
